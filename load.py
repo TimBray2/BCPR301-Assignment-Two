@@ -1,4 +1,5 @@
 # Written By Tim Bray
+from abc import abstractmethod, ABCMeta
 from database_view import Database
 from file_entry_view import FileEntry
 
@@ -29,13 +30,50 @@ class Load:
             pass
 
     def create_load_builder(self, display_type):
-            pass
+            calculators = {"database": LoadDatabase(),
+                           "file": LoadFile()}
+            try:
+                return calculators[display_type]
+            except KeyError:
+                print("Please select to load from 'database' "
+                      "or 'file [location]'")
 
     def get_loaded_input(self):
         return self.__loaded_input
 
     def get_database_flag(self):
         return self.__database_flag
+
+    def get_load_location(self):
+        return self.__load_location
+
+
+class LoadData(object, metaclass=ABCMeta):
+
+    @abstractmethod
+    def load_data(self):
+        pass
+
+
+class LoadDatabase(LoadData):
+
+    def load_data(self):
+        pass
+
+    def get_loaded_input(self):
+        return self.__loaded_input
+
+    def get_load_location(self):
+        return self.__load_location
+
+
+class LoadFile(LoadData):
+
+    def load_data(self):
+        pass
+
+    def get_loaded_input(self):
+        return self.__loaded_input
 
     def get_load_location(self):
         return self.__load_location
