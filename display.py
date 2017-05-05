@@ -1,4 +1,5 @@
 # Written By Tim Bray
+from abc import abstractmethod, ABCMeta
 import graph_maker
 
 
@@ -21,12 +22,44 @@ class Display:
             calculator = self.create_display_builder(format)
             return calculator.display_data()
         except KeyError:
-            print("Please select to display the data that is 'unchecked', "
-                  "'stored', 'graph' or 'database'")
+            print("Please select to display the data that is 'unchecked', 'stored', 'graph' or 'database'")
 
     def create_display_builder(self, display_type):
-        pass
+        calculators = {"unchecked": DisplayUncheckedData(),
+                       "stored": DisplayStoredData(),
+                       "graph": DisplayGraphData(),
+                       "database": DisplayDatabaseData()}
+        return calculators[display_type]
 
     def get_database_flag(self):
         return self.__database_flag
 
+
+class DisplayData(object, metaclass=ABCMeta):
+    @abstractmethod
+    def display_data(self):
+        pass
+
+
+class DisplayUncheckedData(DisplayData):
+
+    def display_data(self):
+        pass
+
+
+class DisplayStoredData(DisplayData):
+
+    def display_data(self):
+        pass
+
+
+class DisplayGraphData(DisplayData):
+
+    def display_data(self):
+        pass
+
+
+class DisplayDatabaseData(DisplayData):
+
+    def display_data(self):
+        pass

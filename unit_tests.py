@@ -8,6 +8,7 @@ from contextlib import contextmanager
 from io import StringIO
 from controller import Controller
 from validate import CheckInput
+from display import DisplayData
 
 
 class MainTests(unittest.TestCase):
@@ -487,6 +488,15 @@ class MainTests(unittest.TestCase):
         self.runTest("exit", "Welcome to the program."
                              '\nThe date is ' + str(self.__today) +
                      "\nExiting.....")
+
+    @patch.multiple(DisplayData, __abstractmethods__=set())
+    def test_DisplayData_abstractMethod(self):
+        self.display_data = DisplayData()
+        with self.captured_output() as (out, err):
+            self.display_data.display_data()
+        output = out.getvalue().strip()
+        expected = ""
+        self.assertEqual(expected, output)
 
     def test_viewHelp_save(self):
         with self.captured_output() as (out, err):
