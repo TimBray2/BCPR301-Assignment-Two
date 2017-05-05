@@ -74,26 +74,28 @@ class CheckInput:
     def rearrange(split_data):
         return [split_data[2], split_data[1], split_data[0]]
 
+    def check_date(self, item, row):
+        split_data = self.__split_item("-", item)
+        if len(split_data) < 2:
+            split_data = self.__split_item("/", item)
+            if len(split_data) < 2:
+                self.__check = False
+        else:
+            try:
+                split_data = list(map(int, split_data))
+            except ValueError:
+                self.__check = False
+            if self.location == "database":
+                split_data = self.rearrange(split_data)
+            if self.__check_date_validity(split_data):
+                self.__age_check = self.__compare_age_to_year(row[2], split_data)
+            else:
+                self.__age_check = False
+
     def check_item_validity(self, item, row):
         if self.__row_check:
             if self.count == 6:
-                split_data = self.__split_item("-", item)
-                if len(split_data) < 2:
-                    split_data = self.__split_item("/", item)
-                    if len(split_data) < 2:
-                        self.__check = False
-                else:
-                    try:
-                        split_data = list(map(int, split_data))
-                    except ValueError:
-                        self.__check = False
-                    if self.location == "database":
-                        split_data = self.rearrange(split_data)
-                    if self.__check_date_validity(split_data):
-                        self.__age_check = self.__compare_age_to_year(row[2],
-                                                                      split_data)
-                    else:
-                        self.__age_check = False
+                self.check_date(item, row)
             else:
                 self.__check = self.__check_regex(
                     self.__regex_checklist[self.count], str(item))
