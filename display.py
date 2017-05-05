@@ -22,26 +22,29 @@ class Display:
             calculator = self.create_display_builder(format)
             return calculator.display_data()
         except KeyError:
-            print("Please select to display the data that is 'unchecked', 'stored', 'graph' or 'database'")
+            print("Please select to display the data that is 'unchecked', "
+                  "'stored', 'graph' or 'database'")
 
     def create_display_builder(self, display_type):
-        calculators = {"unchecked": DisplayUncheckedData(self.__loaded_input),
-                       "stored": DisplayStoredData(self.__stored_data),
-                       "graph": DisplayGraphData(self.__stored_data),
-                       "database": DisplayDatabaseData(self.__database_flag, self.__db)}
+        calculators = {"unchecked": UncheckedDataCalculator(
+            self.__loaded_input),
+                       "stored": StoredDataCalculator(self.__stored_data),
+                       "graph": GraphDataCalculator(self.__stored_data),
+                       "database": DatabaseDataCalculator(self.__database_flag,
+                                                          self.__db)}
         return calculators[display_type]
 
     def get_database_flag(self):
         return self.__database_flag
 
 
-class DisplayData(object, metaclass=ABCMeta):
+class DisplayDataCalculator(object, metaclass=ABCMeta):
     @abstractmethod
     def display_data(self):
         pass
 
 
-class DisplayUncheckedData(DisplayData):
+class UncheckedDataCalculator(DisplayDataCalculator):
     def __init__(self, loaded_input):
         self.load_input = loaded_input
 
@@ -51,7 +54,7 @@ class DisplayUncheckedData(DisplayData):
         print("Unchecked data has been displayed")
 
 
-class DisplayStoredData(DisplayData):
+class StoredDataCalculator(DisplayDataCalculator):
     def __init__(self, stored_data):
         self.stored_data = stored_data
 
@@ -64,7 +67,7 @@ class DisplayStoredData(DisplayData):
             print(self.stored_data)
 
 
-class DisplayGraphData(DisplayData):
+class GraphDataCalculator(DisplayDataCalculator):
     def __init__(self, stored_data):
         self.stored_data = stored_data
 
@@ -76,7 +79,7 @@ class DisplayGraphData(DisplayData):
             print("Please validate and saved data before creating a graph.")
 
 
-class DisplayDatabaseData(DisplayData):
+class DatabaseDataCalculator(DisplayDataCalculator):
     def __init__(self, database_flag, db):
         self.database_flag = database_flag
         self.db = db
