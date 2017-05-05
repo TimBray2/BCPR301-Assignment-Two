@@ -19,7 +19,9 @@ class CmdView(Cmd):
 
     @staticmethod
     def help_save():
-        print('\n'.join(['save [database]', 'Save the imported data. Can be used as "save" or "save database"']))
+        print('\n'.join(['save [database]',
+                         'Save the imported data. '
+                         'Can be used as "save" or "save database"']))
 
     # Configure export input
     def do_pickle(self, line):
@@ -28,7 +30,8 @@ class CmdView(Cmd):
     @staticmethod
     def help_pickle():
         print('\n'.join(['pickle [type] (export, load)',
-                         'Export the stored data to a pickle file or load data from the pickle file.']))
+                         'Export the stored data to a pickle '
+                         'file or load data from the pickle file.']))
 
     # Configure load input
     def do_load(self, location):
@@ -36,7 +39,8 @@ class CmdView(Cmd):
 
     @staticmethod
     def help_load():
-        print('\n'.join(['load [location] (file, database)', 'Load from the database or file']))
+        print('\n'.join(['load [location] (file, database)',
+                         'Load from the database or file']))
 
     # Configure validate input
     def do_validate(self, line):
@@ -52,7 +56,8 @@ class CmdView(Cmd):
 
     @staticmethod
     def help_display():
-        print('\n'.join(['display [type] (unchecked, stored, graph, database)', 'Display all the stored data']))
+        print('\n'.join(['display [type] (unchecked, stored, graph, '
+                         'database)', 'Display all the stored data']))
 
     # Configure exit input
     @staticmethod

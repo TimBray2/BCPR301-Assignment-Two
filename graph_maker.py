@@ -12,7 +12,8 @@ def create_graph(stored_data):
         elif item[1] in ["F", "Female"]:
             female_count += 1
     fig = {
-        'data': [plotly.graph_objs.Bar(x=['Males', 'Females'], y=[male_count, female_count])],
+        'data': [plotly.graph_objs.Bar(x=['Males', 'Females'],
+                                       y=[male_count, female_count])],
         'layout': {
             'title': 'Number of Males vs Females Saved'}
     }
