@@ -25,10 +25,10 @@ class Display:
             print("Please select to display the data that is 'unchecked', 'stored', 'graph' or 'database'")
 
     def create_display_builder(self, display_type):
-        calculators = {"unchecked": DisplayUncheckedData(),
-                       "stored": DisplayStoredData(),
-                       "graph": DisplayGraphData(),
-                       "database": DisplayDatabaseData()}
+        calculators = {"unchecked": DisplayUncheckedData(self.__loaded_input),
+                       "stored": DisplayStoredData(self.__stored_data),
+                       "graph": DisplayGraphData(self.__stored_data),
+                       "database": DisplayDatabaseData(self.__database_flag, self.__db)}
         return calculators[display_type]
 
     def get_database_flag(self):
@@ -42,24 +42,46 @@ class DisplayData(object, metaclass=ABCMeta):
 
 
 class DisplayUncheckedData(DisplayData):
+    def __init__(self, loaded_input):
+        self.load_input = loaded_input
 
     def display_data(self):
-        pass
+        for row in self.load_input:
+            print(row)
+        print("Unchecked data has been displayed")
 
 
 class DisplayStoredData(DisplayData):
+    def __init__(self, stored_data):
+        self.stored_data = stored_data
 
     def display_data(self):
-        pass
+        if not isinstance(self.stored_data, str):
+            for row in range(len(self.stored_data)):
+                print(self.stored_data[row])
+            print("Stored data has been displayed")
+        else:
+            print(self.stored_data)
 
 
 class DisplayGraphData(DisplayData):
+    def __init__(self, stored_data):
+        self.stored_data = stored_data
 
     def display_data(self):
-        pass
+        if not isinstance(self.stored_data, str):
+            graph_maker.create_graph(self.stored_data)
+            print("Graph has been created in the browser.")
+        else:
+            print("Please validate and saved data before creating a graph.")
 
 
 class DisplayDatabaseData(DisplayData):
+    def __init__(self, database_flag, db):
+        self.database_flag = database_flag
+        self.db = db
 
     def display_data(self):
-        pass
+        for item in self.db.load_database():
+            print(item)
+        print("Contents of database have been displayed.")
