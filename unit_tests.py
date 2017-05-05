@@ -1,5 +1,5 @@
 # Written by Tim Bray
-# Unit Tests For Version Two - Large Class
+# Unit Tests For Version Three - Switch Case
 import datetime
 import unittest
 import cmd_view
@@ -9,6 +9,7 @@ from contextlib import contextmanager
 from io import StringIO
 from controller import Controller
 from validate import CheckInput
+from display import DisplayData
 
 
 class MainTests(unittest.TestCase):
@@ -496,6 +497,15 @@ class MainTests(unittest.TestCase):
         expected = "save [database]" \
                    '\nSave the imported data. Can be used as "save" ' \
                    'or "save database"'
+        self.assertEqual(expected, output)
+
+    @patch.multiple(DisplayData, __abstractmethods__=set())
+    def test_DisplayData_abstractMethod(self):
+        self.display_data = DisplayData()
+        with self.captured_output() as (out, err):
+            self.display_data.display_data()
+        output = out.getvalue().strip()
+        expected = ""
         self.assertEqual(expected, output)
 
     def test_viewHelp_pickle(self):
