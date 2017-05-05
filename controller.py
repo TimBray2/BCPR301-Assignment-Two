@@ -1,15 +1,14 @@
 # Written By Tim Bray
 import datetime
-import cmd_view
-import graph_maker
+from sys import argv
+from display import Display
+from load import Load
 from pickle_data import PickleData
+from save import Save
+import cmd_view
 from database_view import Database
 from file_entry_view import FileEntry
 from validate import CheckInput
-from save import Save
-from sys import argv
-from load import Load
-from display import Display
 
 
 class Controller:
@@ -19,14 +18,14 @@ class Controller:
         self.__check_input = CheckInput()
         self.__stored_data = "Data has not been stored yet"
         self.__washed_input = []
-        self.__load_location = ""
         self.__file_entry = FileEntry()
         self.__db = Database()
         self.__cmd_view = view
         self.__loaded_input = None
+        self.__load_data = Load()
+        self.__load_location = ""
         self.__pickle_data = PickleData()
         self.__save = Save(self.__db)
-        self.__load_data = Load()
         self.__display = Display(self.__db)
 
     def go(self, controller):
@@ -58,14 +57,9 @@ class Controller:
         self.__database_flag = self.__display.get_database_flag()
 
     def validate(self, line):
-        try:
-            if len(line) == 0:
-                self.__washed_input = self.__check_input.check_data(self.__loaded_input, self.__load_location)
-                print("Entry data is checked")
-            else:
-                print("Please do not enter any extra input after 'validate'")
-        except TypeError:
-            print("Please load data before validating")
+        self.__check_input.validate_data(self.__loaded_input,
+                                         self.__load_location, line)
+        self.__washed_input = self.__check_input.get_washed_data()
 
     @staticmethod
     def welcome(line):
@@ -74,7 +68,6 @@ class Controller:
             print("Welcome to the program.\nThe date is " + str(today))
         else:
             print("Please do not enter any extra input after 'welcome'")
-
 
 if __name__ == "__main__":
     control = Controller(cmd_view.CmdView())
