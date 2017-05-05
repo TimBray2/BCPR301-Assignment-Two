@@ -1,5 +1,5 @@
 # Written by Tim Bray
-# Unit Tests For Version Three - Switch Case
+# Unit Tests For Version Three - Long Method
 import datetime
 import unittest
 import cmd_view
@@ -490,15 +490,6 @@ class MainTests(unittest.TestCase):
                              '\nThe date is ' + str(self.__today) +
                      "\nExiting.....")
 
-    def test_viewHelp_save(self):
-        with self.captured_output() as (out, err):
-            self.__view.help_save()
-        output = out.getvalue().strip()
-        expected = "save [database]" \
-                   '\nSave the imported data. Can be used as "save" ' \
-                   'or "save database"'
-        self.assertEqual(expected, output)
-
     @patch.multiple(DisplayData, __abstractmethods__=set())
     def test_DisplayData_abstractMethod(self):
         self.display_data = DisplayData()
@@ -506,6 +497,15 @@ class MainTests(unittest.TestCase):
             self.display_data.display_data()
         output = out.getvalue().strip()
         expected = ""
+        self.assertEqual(expected, output)
+
+    def test_viewHelp_save(self):
+        with self.captured_output() as (out, err):
+            self.__view.help_save()
+        output = out.getvalue().strip()
+        expected = "save [database]" \
+                   '\nSave the imported data. Can be used as "save" ' \
+                   'or "save database"'
         self.assertEqual(expected, output)
 
     def test_viewHelp_pickle(self):
