@@ -2,7 +2,7 @@
 import datetime
 import cmd_view
 import graph_maker
-import pickle
+from pickle_data import PickleData
 from database_view import Database
 from file_entry_view import FileEntry
 from validate import CheckInput
@@ -21,6 +21,7 @@ class Controller:
         self.__db = Database()
         self.__cmd_view = view
         self.__loaded_input = None
+        self.__pickle_data = PickleData()
 
     def go(self, controller):
         self.__cmd_view.set_controller(controller)
@@ -28,38 +29,10 @@ class Controller:
             self.__cmd_view.onecmd(' '.join(argv[1:]))
         self.__cmd_view.cmdloop()
 
-    @staticmethod
-    def pickle_export(stored_data, file_name):
-        with open(file_name + '.pickle', 'wb') as file:
-            pickle.dump(stored_data, file)
-
-    @staticmethod
-    def pickle_load(location):
-        with open(location + '.pickle', 'rb') as file:
-            output = pickle.load(file)
-        return output
-
     def pickle(self, line):
-        try:
-            choice = line.split(" ")
-            if choice[0] == "export":
-                if self.__stored_data != "Data has not been stored yet":
-                    self.pickle_export(self.__stored_data, choice[1])
-                    print("The stored data has been pickled")
-                else:
-                    print("Please load, validate and save data before exporting it.")
-            elif choice[0] != "export":
-                if choice[0] == "load":
-                    self.__loaded_input = self.pickle_load(choice[1])
-                    for item in self.__loaded_input:
-                        print(item)
-                    print("Loaded from pickle file")
-                else:
-                    print("Please follow pickle with 'export (file_name)' or 'load (file_name)'")
-        except IndexError:
-            print("Please follow pickle with 'export (file_name)' or 'load (file_name)'")
-        except FileNotFoundError:
-            print("Please follow pickle with 'export (file_name)' or 'load (file_name)'")
+        self.__pickle_data.pickle(line, self.__loaded_input,
+                                  self.__stored_data)
+        self.__loaded_input = self.__pickle_data.get_loaded_input()
 
     def save(self, line):
         if len(line) == 0:

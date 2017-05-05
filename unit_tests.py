@@ -187,7 +187,7 @@ class MainTests(unittest.TestCase):
         output = out.getvalue().strip()
         expected = "['T123', 'M', '20', '654', 'Normal', '56', '18-10-1996']" \
                    "\n['G834', 'M', '26', '213', 'Overweight', '566', '4-12-1990']" \
-                   "\n['S931', 'F', '15', '986', 'Obesity', '852', '1-5-2001']" \
+                   "\n['S931', 'F', '16', '986', 'Obesity', '852', '1-5-2001']" \
                    "\n['P12', 'M', '18', '682', 'Underweight', '135', '26-7-1998']" \
                    "\n['P912', 'D', '18', '682', 'Underweight', '135', '26-7-1998']" \
                    "\n['P912', 'M', '78', '682', 'Underweight', '135', '26-7-1998']" \
@@ -211,7 +211,7 @@ class MainTests(unittest.TestCase):
         output = out.getvalue().strip()
         expected = "('T123', 'M', 20, 654, 'Normal', 56, '1996-10-18')" \
                    "\n('G834', 'M', 54, 213, 'Overweight', 566, '1990/12/4')" \
-                   "\n('S931', 'F', 15, 986, 'Obesity', 852, '2001-5-1')" \
+                   "\n('S931', 'F', 16, 986, 'Obesity', 852, '2001-5-1')" \
                    "\n('P912', 'M', 18, 483, 'Underweight', 135, '1998-7-26')" \
                    "\n('B720', 'F', 24, 867, 'Normal', 741, '1993-1-6')" \
                    "\n('Z123', 'M', 25, 123, 'Normal', 39, '1992-01-31')" \
@@ -229,7 +229,7 @@ class MainTests(unittest.TestCase):
         output = out.getvalue().strip()
         expected = "['T123', 'M', '20', '654', 'Normal', '56', '18-10-1996']" \
                    "\n['G834', 'M', '26', '213', 'Overweight', '566', '4-12-1990']" \
-                   "\n['S931', 'F', '15', '986', 'Obesity', '852', '1-5-2001']" \
+                   "\n['S931', 'F', '16', '986', 'Obesity', '852', '1-5-2001']" \
                    "\n['B720', 'F', '24', '867', 'Normal', '845864', '6-1-1993']" \
                    "\n['S987', 'F', '30', '867', 'Normal', '741', '6/1/1987']" \
                    "\nStored data has been displayed"
@@ -290,7 +290,7 @@ class MainTests(unittest.TestCase):
         expected = "Opened database successfully" \
                    "\n('T123', 'M', 20, 654, 'Normal', 56, '1996-10-18')" \
                    "\n('G834', 'M', 54, 213, 'Overweight', 566, '1990/12/4')" \
-                   "\n('S931', 'F', 15, 986, 'Obesity', 852, '2001-5-1')" \
+                   "\n('S931', 'F', 16, 986, 'Obesity', 852, '2001-5-1')" \
                    "\n('P912', 'M', 18, 483, 'Underweight', 135, '1998-7-26')" \
                    "\n('B720', 'F', 24, 867, 'Normal', 741, '1993-1-6')" \
                    "\nContents of database have been displayed."
@@ -328,7 +328,7 @@ class MainTests(unittest.TestCase):
                    "\n['B123', 'M', '27', '234', 'Normal', '39', '25-12-1989']" \
                    "\n['T123', 'M', '20', '654', 'Normal', '56', '18-10-1996']" \
                    "\n['G834', 'M', '26', '213', 'Overweight', '566', '4-12-1990']" \
-                   "\n['S931', 'F', '15', '986', 'Obesity', '852', '1-5-2001']" \
+                   "\n['S931', 'F', '16', '986', 'Obesity', '852', '1-5-2001']" \
                    "\n['P912', 'M', '18', '463', 'Underweight', '135', '26-7-1998']" \
                    "\n['B720', 'F', '24', '867', 'Normal', '741', '6-1-1993']" \
                    "\n['S987', 'F', '30', '867', 'Overweight', '741', '6-1-1987']" \
