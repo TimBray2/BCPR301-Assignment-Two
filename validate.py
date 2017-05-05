@@ -74,9 +74,46 @@ class CheckInput:
     def rearrange(split_data):
         return [split_data[2], split_data[1], split_data[0]]
 
+    def check_item_validity(self, item, row):
+        if self.__row_check:
+            if self.count == 6:
+                split_data = self.__split_item("-", item)
+                if len(split_data) < 2:
+                    split_data = self.__split_item("/", item)
+                    if len(split_data) < 2:
+                        self.__check = False
+                else:
+                    try:
+                        split_data = list(map(int, split_data))
+                    except ValueError:
+                        self.__check = False
+                    if self.location == "database":
+                        split_data = self.rearrange(split_data)
+                    if self.__check_date_validity(split_data):
+                        self.__age_check = self.__compare_age_to_year(row[2],
+                                                                      split_data)
+                    else:
+                        self.__age_check = False
+            else:
+                self.__check = self.__check_regex(
+                    self.__regex_checklist[self.count], str(item))
+            if not self.__age_check:
+                print("The date of birth and age do not match up")
+                print("Row: " + str(row) + " has invalid data."
+                                           "\nThis row will not be stored "
+                                           "due to business policies\n")
+                self.__row_check = False
+            elif not self.__check:
+                print(str(item) + " is invalid")
+                print("Row: " + str(row) + " has invalid data."
+                                           "\nThis row will not be stored"
+                                           " due to business policies\n")
+                self.__row_check = False
+        self.count += 1
+
     def check_valid_data(self, row):
         self.__age_check = True
-        count = 0
+        self.count = 0
         self.__row_check = True
         if row[0] not in self.__user_ids:
             self.__user_ids.append(row[0])
@@ -87,45 +124,7 @@ class CheckInput:
                                        "\nThis row will not be stored "
                                        "due to business policies\n")
         for item in row:
-            if self.__row_check:
-                if count == 6:
-                    split_data = self.__split_item("-", item)
-                    if len(split_data) < 2:
-                        split_data = self.__split_item("/", item)
-                        if len(split_data) < 2:
-                            self.__check = False
-                    else:
-                        try:
-                            split_data = list(map(int, split_data))
-                        except ValueError:
-                            self.__check = False
-                        if  self.location == "database":
-                            split_data = self.rearrange(split_data)
-                        if self.__check_date_validity(split_data):
-                            self.__age_check = \
-                                self.__compare_age_to_year(row[2],
-                                                           split_data)
-                        else:
-                            self.__age_check = False
-                else:
-                    self.__check = \
-                        self.__check_regex(
-                            self.__regex_checklist[count], str(item))
-                if not self.__age_check:
-                    print("The date of birth and age do not match up")
-                    print("Row: " + str(row) + " has invalid data."
-                                               "\nThis row will not be"
-                                               " stored due to "
-                                               "business policies\n")
-                    self.__row_check = False
-                elif not self.__check:
-                    print(str(item) + " is invalid")
-                    print("Row: " + str(row) + " has invalid data."
-                                               "\nThis row will not "
-                                               "be stored due to "
-                                               "business policies\n")
-                    self.__row_check = False
-            count += 1
+            self.check_item_validity(item, row)
 
     def check_data(self, data, location):
         self.__washed_data = [True]
