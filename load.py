@@ -30,8 +30,10 @@ class Load:
             pass
 
     def create_load_builder(self, display_type):
-            calculators = {"database": LoadDatabase(),
-                           "file": LoadFile()}
+            calculators = {"database": LoadDatabase(
+                self.__database_flag, self.__db, self.__file_entry),
+                           "file": LoadFile(
+                               self.__location, self.__file_entry)}
             try:
                 return calculators[display_type]
             except KeyError:
@@ -56,9 +58,16 @@ class LoadData(object, metaclass=ABCMeta):
 
 
 class LoadDatabase(LoadData):
+    def __init__(self, database_flag, db, file_entry):
+        self.__database_flag = database_flag
+        self.__db = db
+        self.__file_entry = file_entry
+        self.__loaded_input = None
 
     def load_data(self):
-        pass
+        self.__load_location = "database"
+        self.__loaded_input = self.__db.load_database()
+        print("Loaded from database")
 
     def get_loaded_input(self):
         return self.__loaded_input
@@ -68,9 +77,21 @@ class LoadDatabase(LoadData):
 
 
 class LoadFile(LoadData):
+    def __init__(self, location, file_entry):
+        self.__location = location
+        self.__file_entry = file_entry
+        self.__loaded_input = None
 
     def load_data(self):
-        pass
+        try:
+            self.__load_location = "file"
+            self.__file_entry.get_input(self.__location[1])
+            self.__loaded_input = self.__file_entry.get_data()
+            print("Loaded from file")
+        except IndexError:
+            print("Please select to load from 'database' or 'file [location]'")
+        except FileNotFoundError:
+            print("Please select a valid file location")
 
     def get_loaded_input(self):
         return self.__loaded_input
