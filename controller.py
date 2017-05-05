@@ -6,6 +6,7 @@ from pickle_data import PickleData
 from database_view import Database
 from file_entry_view import FileEntry
 from validate import CheckInput
+from save import Save
 from sys import argv
 
 
@@ -22,6 +23,7 @@ class Controller:
         self.__cmd_view = view
         self.__loaded_input = None
         self.__pickle_data = PickleData()
+        self.__save = Save(self.__db)
 
     def go(self, controller):
         self.__cmd_view.set_controller(controller)
@@ -35,30 +37,10 @@ class Controller:
         self.__loaded_input = self.__pickle_data.get_loaded_input()
 
     def save(self, line):
-        if len(line) == 0:
-            if not self.__washed_input:
-                print("No data has been loaded and validated.\nPlease load and validate data before saving")
-            elif self.__washed_input[0]:
-                print("The following data has been saved")
-                if isinstance(self.__stored_data, str):
-                    self.__stored_data = []
-                    for row in range(1, len(self.__washed_input)):
-                        self.__stored_data.append(self.__washed_input[row])
-        elif line == "database":
-            if not self.__washed_input:
-                print("No data has been loaded and validated.\nPlease load and validate data before saving")
-            elif self.__washed_input[0]:
-                if not self.__database_flag:
-                    self.__db.create_database()
-                    self.__database_flag = True
-                if isinstance(self.__stored_data, str):
-                    self.__stored_data = []
-                    for row in range(1, len(self.__washed_input)):
-                        self.__stored_data.append(self.__washed_input[row])
-                self.__db.insert_into_database(self.__stored_data)
-                print("Saved to database")
-        else:
-            print("Please follow save with 'database' or nothing at all")
+        self.__save.save_data(line, self.__washed_input,
+                              self.__database_flag, self.__stored_data)
+        self.__database_flag = self.__save.get_database_flag()
+        self.__stored_data = self.__save.get_stored_data()
 
     def load(self, location):
         try:
