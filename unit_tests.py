@@ -1,5 +1,4 @@
 # Written by Tim Bray
-# Unit Tests For Version Two - Large Class
 import datetime
 import unittest
 import cmd_view
